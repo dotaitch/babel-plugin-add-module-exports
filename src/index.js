@@ -17,9 +17,16 @@ module.exports = ({ template }) => {
     const rootPath = finder.getRootPath()
 
     // HACK: `path.node.body.push` instead of path.pushContainer(due doesn't work in Plugin.post)
-    rootPath.node.body.push(template('module.exports = exports.default')())
-    if (pluginOptions.addDefaultProperty) {
-      rootPath.node.body.push(template('module.exports.default = exports.default')())
+    if (pluginOptions.accessDefaultWithBracket) {
+      rootPath.node.body.push(template('module.exports = exports["default"]')())
+      if (pluginOptions.addDefaultProperty) {
+        rootPath.node.body.push(template('module.exports["default"] = exports["default"]')())
+      }
+    } else {
+      rootPath.node.body.push(template('module.exports = exports.default')())
+      if (pluginOptions.addDefaultProperty) {
+        rootPath.node.body.push(template('module.exports.default = exports.default')())
+      }
     }
   }
 

@@ -46,7 +46,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = 'foo';
-module.exports = exports['default'];
+module.exports = exports.default;
 ```
 
 Therefore, our old codes still work fine - the `.default` goes away. :wink:
@@ -131,8 +131,33 @@ If you're exporting an object and wish to maintain compatibility with code using
 This will cause a second line of code to be added which aliases the `default` name to the exported object like so:
 
 ```js
-module.exports = exports['default'];
-module.exports.default = exports['default']
+module.exports = exports.default;
+module.exports.default = exports.default;
+```
+
+## `accessDefaultWithBracket`
+
+If you need to ensure that `default` is quoted in property accesses, you can optionally enable the `accessDefaultWithBracket` option as follows:
+
+```json
+{
+  "presets": ["env"],
+  "plugins": [
+    [
+      "add-module-exports",
+      {
+        "accessDefaultWithBracket": true
+      }
+    ]
+  ]
+}
+```
+
+This will cause enclose the `default` by brackets and double quotes because `default` is a keyword in ES3.
+
+```js
+module.exports = exports["default"];
+module.exports["default"] = exports["default"];
 ```
 
 See also

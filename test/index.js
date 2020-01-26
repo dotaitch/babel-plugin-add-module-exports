@@ -57,6 +57,29 @@ Object.keys(babelVersions).forEach(ver => {
       assert(typeof plugin === 'function')
     })
 
+    it('should transform member expression literal', () => {
+      testPlugin(
+        transform,
+        `export default () => 'default-entry';`,
+        {
+          presets: [env],
+          plugins: [
+            [
+              './src/index.js',
+              {
+                accessDefaultWithBracket: true,
+                addDefaultProperty: true
+              }
+            ]
+          ]
+        },
+        (_, code) => {
+          assert(code.includes('module.exports = exports["default"]'))
+          assert(code.includes('module.exports["default"] = exports["default"]'))
+        }
+      )
+    })
+
     if (ver === 'babel@6') {
       // babel 7 throws an error with duplicate plugins
       it('should handle duplicated plugin references (#1)', () =>
