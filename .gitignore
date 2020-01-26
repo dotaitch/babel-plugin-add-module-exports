@@ -24,7 +24,6 @@ coverage
 build/Release
 
 # Compiled commonJS files
-lib
 spec
 
 # Dependency directory
